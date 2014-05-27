@@ -24,30 +24,55 @@ var DesignfrontierGenerator = yeoman.generators.Base.extend({
     this.log(yosay('Welcome to the marvelous Designfrontier generator!'));
 
     var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
+      name: 'projectName',
+      message: 'What are we calling this project?'
     }];
 
     this.prompt(prompts, function (props) {
-      this.someOption = props.someOption;
+      this.projectName = props.projectName;
 
       done();
     }.bind(this));
   },
 
-  app: function () {
-    this.mkdir('app');
-    this.mkdir('app/templates');
+  makeDirs: function () {
+    this.mkdir('bin');
+    this.mkdir('public');
+    this.mkdir('routes');
+    this.mkdir('views');
 
-    this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
+    this.mkdir('public/images');
+    this.mkdir('public/javascripts');
+    this.mkdir('public/javascripts/components');
+    this.mkdir('public/javascripts/libs');
+
+    this.mkdir('public/stylesheets');
+  },
+
+  app: function () {
+    //copy the views for express and node
+    this.copy('views/error.ejs', 'views/error.ejs');
+    this.copy('views/index.ejs', 'views/index.ejs');
+
+    //copy the base route handlers for express
+    this.template('routes/_index.js', 'routes/index.js');
+    this.copy('routes/users.js', 'routes/users.js');
+
+    //copy some stylesheets
+    this.copy('public/stylesheets/style.css', 'public/stylesheets/style.css');
+
+    //copy the base express application file
+    this.copy('app.js', 'app.js');
+
+    //copy the package.json and bower.json files
+    this.template('_package.json', 'package.json');
+    this.template('_bower.json', 'bower.json');
   },
 
   projectfiles: function () {
     this.copy('editorconfig', '.editorconfig');
     this.copy('jshintrc', '.jshintrc');
+    this.template('_Gulpfile.js', 'Gulpfile.js');
   }
 });
 
