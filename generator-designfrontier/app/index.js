@@ -50,6 +50,9 @@ var DesignfrontierGenerator = yeoman.generators.Base.extend({
   },
 
   app: function () {
+    //copy the startup script
+    this.copy('bin/www', 'bin/www');
+    
     //copy the views for express and node
     this.copy('views/error.ejs', 'views/error.ejs');
     this.copy('views/index.ejs', 'views/index.ejs');
