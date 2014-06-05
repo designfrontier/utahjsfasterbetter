@@ -1,0 +1,15 @@
+Presentation notes:
+
+Title: "Build it better, faster, stronger"
+
+Audio: Daft Punk Tron Soundtrack
+
+Outline:
+
+1. Welcome
+	- About me (2-5minutes)
+	- introduction (2 minutes) [it's 1 am you have a weekend to build this thing. go.]
+2. scaffolding up projects with yoeman
+3. gulping down code (gulpjs)
+4. Deploying to heroku
+5. CSS tricks and keywords
