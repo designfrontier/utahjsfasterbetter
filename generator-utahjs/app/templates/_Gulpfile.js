@@ -1,15 +1,8 @@
 var gulp = require('gulp')
     , watch = require('gulp-watch')
-    , plumber = require('gulp-plumber')
     , concat = require('gulp-concat')
     , uglify = require('gulp-uglify')
-    , rename = require('gulp-rename')
-    , jshint = require('gulp-jshint')
     , cssmin = require('gulp-cssmin')
-
-    , handlebars = require('gulp-handlebars')
-    , defineModule = require('gulp-define-module')
-    , declare = require('gulp-declare')
 
     , pkg = require('./package.json');
 
@@ -28,25 +21,15 @@ gulp.task('default', ['localBuild'], function(){
 });
 
 //Local Build
-gulp.task('localBuild', ['buildTemplates', 'buildCss'], function(){
+gulp.task('localBuild', ['buildCSS', 'buildJS'], function(){
     'use strict';
+    //TODO Minify the html and finish this thing!
+
     
-    gulp.src([
-            'public/javascripts/libs/*.js'
-            , 'public/javascripts/app.js'
-            , 'public/javascripts/built/templates.js'
-            , './public/javascripts/components/**/*.js'
-            ,'!./public/javascripts/components/**/*_test.js'
-        ])
-        .pipe(concat('app.js'))
-        // .pipe(jshint())
-        // .pipe(jshint.reporter('default'))
-        .pipe(gulp.dest('public/javascripts/built/'))
-        .pipe(uglify());
 });
 
 //Build the CSS
-gulp.task('buildCss', function(){
+gulp.task('buildCSS', function(){
     'use strict';
 
     gulp.src(['public/stylesheets/**/*.css'])
@@ -55,19 +38,18 @@ gulp.task('buildCss', function(){
         .pipe(gulp.dest('public/stylesheets/built/'));
 });
 
-//Build the Templates
-gulp.task('buildTemplates', function(){
+//BUild the js
+gulp.task('buildJS', function(){
     'use strict';
 
     gulp.src([
-            './templates/*.html'
-            , './public/javascripts/components/**/*-template.html'
+            'public/javascripts/libs/*.js'
+            , 'public/javascripts/app.js'
+            , 'public/javascripts/built/templates.js'
+            , './public/javascripts/components/**/*.js'
+            ,'!./public/javascripts/components/**/*_test.js'
         ])
-        .pipe(handlebars())
-        .pipe(defineModule('plain'))
-        .pipe(declare({
-          namespace: 'action.templates'
-        }))
-        .pipe(concat('templates.js'))
-        .pipe(gulp.dest("./public/javascripts/built/"));
+        .pipe(concat('app.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('public/javascripts/built/'));
 });
