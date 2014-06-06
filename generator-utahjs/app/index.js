@@ -1,12 +1,14 @@
 'use strict';
-var util = require('util');
-var path = require('path');
-var yeoman = require('yeoman-generator');
-var yosay = require('yosay');
-var chalk = require('chalk');
+var util = require('util')
+    , path = require('path')
+    , yeoman = require('yeoman-generator')
+    , yosay = require('yosay')
+    , chalk = require('chalk')
+    , exec = require('child_process').exec
+    , UtahJSGenerator;
 
 
-var UtahJSGenerator = yeoman.generators.Base.extend({
+UtahJSGenerator = yeoman.generators.Base.extend({
   init: function () {
     this.pkg = require('../package.json');
 
@@ -15,9 +17,9 @@ var UtahJSGenerator = yeoman.generators.Base.extend({
         this.installDependencies();
       }
     });
-  },
+  }
 
-  askFor: function () {
+  , askFor: function () {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -33,9 +35,9 @@ var UtahJSGenerator = yeoman.generators.Base.extend({
 
       done();
     }.bind(this));
-  },
+  }
 
-  makeDirs: function () {
+  , makeDirs: function () {
     this.mkdir('bin');
     this.mkdir('public');
     this.mkdir('routes');
@@ -47,9 +49,9 @@ var UtahJSGenerator = yeoman.generators.Base.extend({
     this.mkdir('public/javascripts/components');
 
     this.mkdir('public/stylesheets');
-  },
+  }
 
-  app: function () {
+  , app: function () {
     //copy the startup script
     this.copy('bin/www', 'bin/www');
 
@@ -71,12 +73,30 @@ var UtahJSGenerator = yeoman.generators.Base.extend({
 
     //copy the package.json and bower.json files
     this.template('_package.json', 'package.json');
-  },
+  }
 
-  projectfiles: function () {
+  , projectfiles: function () {
     this.copy('editorconfig', '.editorconfig');
     this.copy('jshintrc', '.jshintrc');
     this.template('_Gulpfile.js', 'Gulpfile.js');
+    this.copy('procfile', 'procfile');
+    this.copy('.gitignore', '.gitignore');
+  }
+
+  , gitAndHeroku: function(){
+    var projectName = this.projectName;
+
+    exec('git init .', function(){
+      exec('git add .', function(){
+        exec('git commit -m "initial commit of ' + projectName + '"', function(){
+          exec('heroku create ' + projectName, function (error, stdout, stderr) {
+            exec('git push heroku master', function(){
+              //Yep we just depoyed the base project to the cloud
+            });
+          });
+        });
+      })
+    });
   }
 });
 
