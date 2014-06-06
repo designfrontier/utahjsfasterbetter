@@ -6,7 +6,7 @@ var yosay = require('yosay');
 var chalk = require('chalk');
 
 
-var DesignfrontierGenerator = yeoman.generators.Base.extend({
+var UtahJSGenerator = yeoman.generators.Base.extend({
   init: function () {
     this.pkg = require('../package.json');
 
@@ -42,9 +42,9 @@ var DesignfrontierGenerator = yeoman.generators.Base.extend({
     this.mkdir('views');
 
     this.mkdir('public/images');
+    this.mkdir('public/fonts');
     this.mkdir('public/javascripts');
     this.mkdir('public/javascripts/components');
-    this.mkdir('public/javascripts/libs');
 
     this.mkdir('public/stylesheets');
   },
@@ -54,22 +54,23 @@ var DesignfrontierGenerator = yeoman.generators.Base.extend({
     this.copy('bin/www', 'bin/www');
 
     //copy the views for express and node
-    this.copy('views/error.ejs', 'views/error.ejs');
-    this.copy('views/index.ejs', 'views/index.ejs');
+    this.directory('views/', 'views/');
 
     //copy the base route handlers for express
     this.template('routes/_index.js', 'routes/index.js');
     this.copy('routes/users.js', 'routes/users.js');
 
     //copy some stylesheets
-    this.copy('public/stylesheets/style.css', 'public/stylesheets/style.css');
+    this.directory('public/stylesheets/');
+
+    //copy some js files over
+    this.directory('public/javascripts/');
 
     //copy the base express application file
     this.copy('app.js', 'app.js');
 
     //copy the package.json and bower.json files
     this.template('_package.json', 'package.json');
-    this.template('_bower.json', 'bower.json');
   },
 
   projectfiles: function () {
@@ -79,4 +80,4 @@ var DesignfrontierGenerator = yeoman.generators.Base.extend({
   }
 });
 
-module.exports = DesignfrontierGenerator;
+module.exports = UtahJSGenerator;

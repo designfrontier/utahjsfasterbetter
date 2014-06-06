@@ -3,6 +3,7 @@ var gulp = require('gulp')
     , concat = require('gulp-concat')
     , uglify = require('gulp-uglify')
     , cssmin = require('gulp-cssmin')
+    , htmlreplace = require('gulp-html-replace')
 
     , pkg = require('./package.json');
 
@@ -13,8 +14,11 @@ gulp.task('default', ['localBuild'], function(){
                 'public/javascripts/libs/*.js'
                 , 'public/javascripts/app.js'
                 , 'public/javascripts/components/**/*.js'
+                , 'public/stylesheets/*.css'
                 , 'templates/*.html'
                 , 'public/javascripts/components/**/*-template.html'
+                , '!public/javascripts/built/*.js'
+                , '!public/stylesheets/built/*.css'
             ], function(){
         gulp.run('localBuild');
     });
@@ -23,9 +27,7 @@ gulp.task('default', ['localBuild'], function(){
 //Local Build
 gulp.task('localBuild', ['buildCSS', 'buildJS'], function(){
     'use strict';
-    //TODO Minify the html and finish this thing!
 
-    
 });
 
 //Build the CSS
@@ -52,4 +54,15 @@ gulp.task('buildJS', function(){
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('public/javascripts/built/'));
+});
+
+gulp.task('buildFinal', ['buildJS', 'buildCSS'], function(){
+    'use strict';
+
+    gulp.src(['views/*.ejs'])
+        .pipe(htmlreplace({
+            js: '/javascripts/built/app.js'
+            , css: '/stylesheets/built/main.css'
+        }))
+        .pipe(gulp.dest('views/'))
 });

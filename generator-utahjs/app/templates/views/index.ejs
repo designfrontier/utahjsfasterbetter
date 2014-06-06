@@ -2,10 +2,19 @@
 <html>
   <head>
     <title><%= title %></title>
+    <!-- build:css -->
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- endbuild -->
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <!-- build:js -->
+    <script src="/javascripts/libs/zepto.min.js"></script>
+    <script src="/javascripts/libs/localforage.js"></script>
+    <script src="/javascripts/libs/handlebars.runtime-v1.3.0.js"></script>
+    <script src="/javascripts/libs/hammer-v.1.0.7.min.js"></script>
+    <script src="/javascripts/app.js"></script>
+    <!-- endbuild -->
   </body>
 </html>
