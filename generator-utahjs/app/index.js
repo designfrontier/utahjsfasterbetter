@@ -79,7 +79,6 @@ UtahJSGenerator = yeoman.generators.Base.extend({
     this.copy('editorconfig', '.editorconfig');
     this.copy('jshintrc', '.jshintrc');
     this.template('_Gulpfile.js', 'Gulpfile.js');
-    this.copy('procfile', 'procfile');
     this.copy('.gitignore', '.gitignore');
   }
 
